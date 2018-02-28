@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guigu.instructional.finance.mapper.StaffSalaryOrderMapper" >
+	
+	<resultMap type="com.guigu.instructional.po.StaffSalaryOrder" id="staffSalaryOrder">
+		<id column="staff_salary_id" property="staffSalaryOrderId"/>
+	    <result column="staff_name" property="staffName"/>
+	    <result column="finance_Name" property="financeName"/>
+		<association property="staffSalary" javaType="com.guigu.instructional.po.StaffSalary">
+			<result column="staff_id" property="staffId"/>
+			<result column="sta_staff_id" property="staStaffId"/>
+			<result column="staff_salary_total" property="staffSalaryTotal"/>
+			<result column="staff_salary_deduct" property="staffSalaryDeduct"/>
+			<result column="staff_salary_real" property="staffSalaryReal"/>
+			<result column="staff_salary_isused" property="staffSalaryIsused"/>
+			<result column="staff_salary_time" property="staffSalaryTime"/>
+			<result column="remark" property="remark"/>
+		</association>
+	</resultMap>
+	<select id="findStudentPaymentOrder" resultMap="staffSalaryOrder" parameterType="com.guigu.instructional.po.StaffSalaryOrder">
+		select staff_salary.*,t.staff_name,t2.staff_name finance_Name
+		from staff_salary,staff_info t,staff_info t2
+		<where>
+			<if test="financeName!=null and financeName!=''">
+				and finance_Name like '%${financeName}%'
+			</if>
+			<if test="staffName!=null and staffName!=''">
+				and t.staff_name like '%${staffName}%'
+			</if>
+			<if test="staffSalaryOrderId!=0">
+				and staff_salary.staff_salary_id=#{staffSalaryOrderId}
+			</if>
+			and staff_salary.staff_id=t.staff_id 
+			and staff_salary.sta_staff_id=t2.staff_id
+		</where>
+	</select>
+	<select id="findStudentPaymentOrderById" resultMap="staffSalaryOrder" parameterType="int">
+		select staff_salary.*,t.staff_name,t2.staff_name finance_Name
+		from staff_salary,staff_info t,staff_info t2
+		<where>
+			
+			and staff_salary.staff_salary_id=#{staffSalaryOrderId}
+			
+			and staff_salary.staff_id=t.staff_id 
+			and staff_salary.sta_staff_id=t2.staff_id
+		</where>
+	</select>
+</mapper>

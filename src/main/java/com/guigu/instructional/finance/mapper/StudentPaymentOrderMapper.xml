@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guigu.instructional.finance.mapper.StudentPaymentOrderMapper" >
+	<resultMap type="com.guigu.instructional.po.StudentPaymentOrder" id="StudentPaymentOrder">
+	    <id column="payment_id" property="studentPaymentId"/>
+	    <result column="student_name" property="studnetName"/>
+	    <result column="staff_name" property="staffName"/>
+		<result column="class_name" property="className"/>
+	    
+		<association property="studentPayment" javaType="com.guigu.instructional.po.StudentPayment">
+			<result column="student_id" property="studentId"/>
+			<result column="staff_id" property="staffId"/>
+			<result column="payment_situtation" property="paymentSitutation"/>
+			<result column="payment_menthod" property="paymentMenthod"/>
+			<result column="payment_time" property="paymentTime"/>
+			<result column="payment_discount_amount" property="paymentDiscountAmount"/>
+			<result column="payment_should_amount" property="paymentShouldAmount"/>
+			<result column="payment_real_amount" property="paymentRealAmount"/>
+			<result column="payment_debt_amount" property="paymentDebtAmount"/>
+			<result column="payment_remark" property="paymentRemark"/>
+		</association>
+	</resultMap>
+	
+	
+	
+	<select id="findStudentPaymentOrder" resultMap="StudentPaymentOrder" parameterType="com.guigu.instructional.po.StudentPaymentOrder">
+		select student_payment.*,student_info.student_name,staff_info.staff_name,class_info.class_name
+		from student_info,student_payment,staff_info,class_info
+		<where>
+			<if test="studnetName!=null and studnetName!=''">
+				and student_info.student_name like '%${studnetName}%'
+			</if>
+			<if test="className!=null and className!=''">
+				and class_info.class_name like '%${className}%'
+			</if>
+			<if test="studentPaymentId!=0">
+				and student_payment.payment_id=#{studentPaymentId}
+			</if>
+			and student_payment.student_id=student_info.student_id
+			and student_payment.staff_id=staff_info.staff_id
+			and student_info.class_id=class_info.class_id
+		</where>
+	</select>
+</mapper>
+ 

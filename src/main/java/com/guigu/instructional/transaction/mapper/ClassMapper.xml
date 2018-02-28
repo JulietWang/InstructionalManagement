@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.guigu.instructional.transaction.mapper.ClassMapper">
+
+ 	<!-- 3.查询用户以及用户购买的商品信息 使用resultMap -->
+ 	<resultMap type="com.guigu.instructional.po.ClassroomInfo" id="UserAndItemsResultMap">
+ 		<!-- 用户信息 -->
+ 		<id column="classroom_id" property="classroomId"/>
+ 		<result column="classroom_name" property="classroomName"/>
+ 		<result column="classroom_max" property="classroomMax"/>
+ 		<result column="classroom_info" property="classroomInfo"/>
+ 		<result column="classroom_remark" property="classroomRemark"/>
+ 		<result column="classroom_mark" property="classroomMark"/>
+
+ 		
+ 		<!-- 订单明细
+ 			一个用户对应多个订单
+ 		 -->
+ 		 <collection property="classInfo" ofType="com.guigu.instructional.po.ClassInfo">
+ 		 	<id column="id" property="id"/>
+ 		 	<result column="class_id" property="classId"/>
+ 		 	<result column="discipline_id" property="disciplineId"/>
+	 	    <result column="syllabus_id" property="syllabusId"/>
+	 	    <result column="classroom_id" property="classroomId"/>
+	 	    <result column="staff_id" property="staffId"/>
+	 	    <result column="class_name" property="className"/>
+	 	    <result column="class_number" property="classNumber"/>
+	 	    <result column="class_start_time" property="classStartTime"/>
+	 	    <result column="class_end_time" property="classEndTime"/>
+	 	    <result column="class_isused" property="classIsused"/>
+	 	    <result column="class_state" property="classState"/>
+	 	    <result column="class_desc" property="classDesc"/>
+	 	    
+	 	     <!-- 订单明细 
+	 	     	一个订单包含多个订单明细
+	 	     -->
+	 	     <collection property="classTransactionInfo" ofType="com.guigu.instructional.po.ClassTransactionInfo">
+	 	     	<id column="class_transaction_id" property="classTransactionId"/> 		
+				<result column="class_id" property="classId"/>
+				<result column="class_transaction_tile" property="classTransactionTile"/>
+				<result column="class_transaction_content" property="classTransactionContent"/>
+				<result column="class_transaction_person" property="classTransactionPerson"/>
+				<result column="class_transaction_time" property="classTransactionTime"/>
+				<result column="class_transaction_remar" property="classTransactionRemar"/>
+
+				
+	 	     </collection>
+ 		 </collection>
+ 		
+ 	
+ 	</resultMap>
+ 	
+ 	<select id="findClassMap" resultMap="UserAndItemsResultMap">
+		SELECT
+			classroom_info.classroom_id,
+			classroom_info.classroom_info,
+			classroom_info.classroom_mark,
+			classroom_info.classroom_max,
+			classroom_info.classroom_name,
+			classroom_info.classroom_remark,
+			class_info.class_desc,
+			class_info.classroom_id,
+			class_info.class_end_time,
+			class_info.class_id,
+			class_info.class_isused,
+			class_info.class_name,
+			class_info.class_number,
+			class_info.class_start_time,
+			class_info.class_state,
+			class_info.discipline_id,
+			class_info.staff_id,
+			class_info.syllabus_id,
+			
+			class_transaction_info.class_id,
+			class_transaction_info.class_transaction_content,
+			class_transaction_info.class_transaction_id,
+			class_transaction_info.class_transaction_person,
+			class_transaction_info.class_transaction_remar,
+			class_transaction_info.class_transaction_tile,
+			class_transaction_info.class_transaction_time
+		FROM
+			classroom_info,
+			class_info,
+			class_transaction_info
+		WHERE
+			classroom_info.classroom_id=class_info.classroom_id and class_info.class_id=class_transaction_info.class_id;
+ 	</select>
+ 	
+ 	
+ 
+ 	
+ 	
+ 	
+ 
+ 
+ </mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guigu.instructional.marketactive.mapper.MessageVOMapper">
+	<insert id="addMessage" parameterType="com.guigu.instructional.po.MessageVO" >
+     insert into message_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageId1 != null" >
+        message_id1,
+      </if>
+      <if test="staffId != null" >
+        staff_id,
+      </if>
+      <if test="messageContent != null" >
+        message_content,
+      </if>
+      <if test="messageMan != null" >
+        message_man,
+      </if>
+      <if test="messagePhone != null" >
+        message_phone,
+      </if>
+      <if test="messageTime != null" >
+        message_time,
+      </if>
+      <if test="messageState != null" >
+        message_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageId1 != null" >
+        #{messageId1,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null" >
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="messageContent != null" >
+        #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="messageMan != null" >
+        #{messageMan,jdbcType=VARCHAR},
+      </if>
+      <if test="messagePhone != null" >
+        #{messagePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="messageTime != null" >
+        #{messageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageState != null" >
+        #{messageState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+</mapper>
